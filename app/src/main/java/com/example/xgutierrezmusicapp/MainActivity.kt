@@ -3,45 +3,46 @@ package com.example.xgutierrezmusicapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.xgutierrezmusicapp.screens.DetailScreen
+import com.example.xgutierrezmusicapp.screens.HomeScreen
+import com.example.xgutierrezmusicapp.screens.Routes
 import com.example.xgutierrezmusicapp.ui.theme.XGutierrezMusicAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             XGutierrezMusicAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+
+                NavHost(
+                    navController = navController,
+                    startDestination = Routes.Home.route
+                ) {
+                    // 1. Ruta de Home
+                    composable(Routes.Home.route) {
+                        HomeScreen(navController = navController,)
+                    }
+
+                    // 2. Ruta de Detail, requiere el argumento 'albumId'
+                    composable(
+                        route = Routes.Detail.route,
+                        arguments = listOf(
+                            navArgument("albumId") { type = NavType.StringType }
+                        )
+                    ) { backStackEntry ->
+                        val albumId = backStackEntry.arguments?.getString("albumId") ?:
+                        throw IllegalStateException("El id del álbum no puede ser nulo.")
+
+                        DetailScreen(navController = navController, albumId = albumId)
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    XGutierrezMusicAppTheme {
-        Greeting("Android")
     }
 }

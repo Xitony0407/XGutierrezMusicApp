@@ -88,10 +88,13 @@ fun HomeHeader() {
 }
 
 @Composable
-fun AlbumCard(album: Album, navController: NavController) {
+fun AlbumCard(album: Album,
+              navController: NavController,
+              onAlbumSelected: (Album) -> Unit
+){
     Card(
         onClick = {
-            // Navegación al detalle
+            onAlbumSelected(album)
             navController.navigate(Routes.Detail.createRoute(album.id))
         },
         modifier = Modifier
@@ -148,7 +151,9 @@ fun AlbumCard(album: Album, navController: NavController) {
 
             // Botón de Play Circular
             IconButton(
-                onClick = { /* Acción de Play */ },
+                onClick = {
+                    onAlbumSelected(album)
+                },
                 modifier = Modifier
                     .size(36.dp)
                     .align(Alignment.BottomEnd)
@@ -166,7 +171,9 @@ fun AlbumCard(album: Album, navController: NavController) {
 }
 
 @Composable
-fun AlbumsLazyRow(albums: List<Album>, navController: NavController) {
+fun AlbumsLazyRow(albums: List<Album>,
+                  navController: NavController,
+                  onAlbumSelected: (Album) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
 
         // Header "Albums" y "See more"
@@ -196,7 +203,9 @@ fun AlbumsLazyRow(albums: List<Album>, navController: NavController) {
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(albums) { album ->
-                AlbumCard(album = album, navController = navController)
+                AlbumCard(album = album,
+                    navController = navController,
+                    onAlbumSelected = onAlbumSelected)
             }
         }
     }
@@ -269,7 +278,7 @@ fun RecentlyPlayedCard(album: Album,
 }
 
 @Composable
-fun RecentlyPlayedLazyColumn(
+fun RecentlyPlayedList(
     albums: List<Album>,
     navController: NavController,
     modifier: Modifier = Modifier,
@@ -299,12 +308,13 @@ fun RecentlyPlayedLazyColumn(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // LazyColumn Vertical
-        LazyColumn(
+        Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(albums) { album ->
-                RecentlyPlayedCard(album = album, navController = navController, onAlbumSelected = onAlbumSelected)
+            albums.forEach { album ->
+                RecentlyPlayedCard(album = album,
+                    navController = navController,
+                    onAlbumSelected = onAlbumSelected)
             }
         }
     }

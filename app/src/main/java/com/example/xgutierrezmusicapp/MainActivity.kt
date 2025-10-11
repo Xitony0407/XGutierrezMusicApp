@@ -36,13 +36,18 @@ class MainActivity : ComponentActivity() {
                             navArgument("albumId") { type = NavType.StringType }
                         )
                     ) { backStackEntry ->
-                        val albumId = backStackEntry.arguments?.getString("albumId") ?:
-                        throw IllegalStateException("El id del álbum no puede ser nulo.")
+                        val albumId = backStackEntry.arguments?.getString("albumId")
 
-                        DetailScreen(navController = navController, albumId = albumId)
+                        if (albumId.isNullOrEmpty()) {
+                            navController.navigate(Routes.Home.route) {
+                                popUpTo(Routes.Home.route) { inclusive = true } // Limpia la pila para evitar bucles
+                            }
+                        } else {
+                            DetailScreen(navController = navController, albumId = albumId)
+                        }
                     }
-                }
             }
         }
+    }
     }
 }

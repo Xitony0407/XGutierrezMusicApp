@@ -2,6 +2,8 @@ package com.example.xgutierrezmusicapp.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,7 +33,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = rememberHomeViewModel()
 ) {
     val uiState = homeViewModel.state
-
+    val scrollState = rememberScrollState()
     Scaffold(
         bottomBar = {
             uiState.currentMiniPlayerAlbum?.let { album ->
@@ -49,6 +51,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(BackgroundLight)
                 .padding(paddingValues)
+                .verticalScroll(scrollState)
         ) {
             HomeHeader()
 
@@ -64,13 +67,14 @@ fun HomeScreen(
                 is Resource.Success -> {
                     albumsResource.data?.let { albums ->
                         // Carrusel de Álbumes (LazyRow)
-                        AlbumsLazyRow(albums = albums, navController = navController)
+                        AlbumsLazyRow(albums = albums,
+                            navController = navController,
+                            onAlbumSelected = homeViewModel::setMiniPlayerAlbum)
 
-                        // Lista de "Recently Played" (LazyColumn)
-                        RecentlyPlayedLazyColumn(
+                        // Lista de "Recently Played"
+                        RecentlyPlayedList(
                             albums = albums.take(5),
                             navController = navController,
-                            modifier = Modifier.weight(1f),
                             onAlbumSelected = homeViewModel::setMiniPlayerAlbum
                         )
                     }

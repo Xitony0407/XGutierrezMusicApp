@@ -79,43 +79,45 @@ fun DetailHeader(album: Album, navController: NavController) {
                 .padding(horizontal = 16.dp, vertical = 24.dp)
         ) {
             Text(
-                text = album.title,
+                text = album.title ?: "Álbum Desconocido",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.White,
                 maxLines = 2
             )
             Text(
-                text = album.artist,
+                text = album.artist ?: "Artista Desconocido",
                 fontSize = 18.sp,
                 color = Color.White.copy(alpha = 0.8f),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Button(
+
+                // Botón Play
+                IconButton(
                     onClick = { /* Handle Play */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    modifier = Modifier.width(120.dp)
+                    modifier = Modifier
+                        .size(56.dp)
+                        .background(Color.White, CircleShape)
                 ) {
-                    Icon(Icons.Filled.PlayArrow, contentDescription = "Play", tint = MiniPlayerDark)
-                    Spacer(Modifier.width(4.dp))
-                    Text("Play", color = MiniPlayerDark, fontWeight = FontWeight.Bold)
+                    Icon(Icons.Filled.PlayArrow, contentDescription = "Play", tint = Color.Black, modifier = Modifier.size(32.dp))
                 }
 
-                OutlinedButton(
+                // Botón Shuffle
+                IconButton(
                     onClick = { /* Handle Shuffle */ },
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.8f)),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+                    modifier = Modifier
+                        .size(56.dp)
+                        .background(Color.White, CircleShape)
                 ) {
-                    Icon(Icons.Filled.Shuffle, contentDescription = "Shuffle")
-                    Spacer(Modifier.width(4.dp))
-                    Text("Shuffle")
+                    Icon(Icons.Filled.Shuffle, contentDescription = "Shuffle", tint = Color.Black, modifier = Modifier.size(32.dp))
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun AboutAlbumCard(album: Album) {
@@ -160,8 +162,15 @@ fun AboutAlbumCard(album: Album) {
 }
 
 @Composable
-fun SongItemCard(songTitle: String, artistName: String, coverUrl: String) {
+fun SongItemCard(songTitle: String,
+                 artistName: String,
+                 coverUrl: String?,
+                 albumId: String,
+                 navController: NavController) {
     Card(
+        onClick = {
+            navController.navigate(Routes.SongDetail.createRoute(albumId, songTitle))
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp, horizontal = 16.dp),
@@ -218,7 +227,8 @@ fun SongItemCard(songTitle: String, artistName: String, coverUrl: String) {
 
 
 @Composable
-fun AlbumSongsList(album: Album) {
+fun AlbumSongsList(album: Album,
+                   navController: NavController) {
 
     Text(
         text = "Tracks",
@@ -229,10 +239,14 @@ fun AlbumSongsList(album: Album) {
 
     repeat(10) { index ->
         val trackNumber = index + 1
+        val fullSongTitle = "${album.title} • Track $trackNumber"
+
         SongItemCard(
-            songTitle = "${album.title} • Track $trackNumber",
-            artistName = album.artist,
-            coverUrl = album.cover
+            songTitle = fullSongTitle,
+            artistName = album.artist ?: "Artista Desconocido",
+            coverUrl = album.cover,
+            albumId = album.id ?: "0", // <--- PASAMOS EL ID DEL ÁLBUM
+            navController = navController // <--- PASAMOS EL NAV CONTROLLER
         )
     }
 

@@ -39,8 +39,8 @@ fun DetailScreen(navController: NavController, albumId: String) {
         bottomBar = {
             loadedAlbum?.let { album ->
                 MiniPlayer(
-                    title = album.title,
-                    artist = album.artist,
+                    title = album.title ?: "Desconocido",
+                    artist = album.artist ?: "Desconocido",
                     isPlaying = uiState.isPlaying,
                     onPlayPauseClicked = viewModel::toggleMiniPlayer
                 )
@@ -65,26 +65,30 @@ fun DetailScreen(navController: NavController, albumId: String) {
                 }
                 is Resource.Success -> {
                     albumResource.data?.let { album ->
+                        if (!album.id.isNullOrEmpty()) {
+                            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                if (album.id.isNotEmpty()) {
+                                    // 1. HEADER
+                                    item {
+                                        DetailHeader(album = album, navController = navController)
+                                    }
 
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                    // 2. CARD ABOUT
+                                    item {
+                                        AboutAlbumCard(album = album)
+                                    }
 
-                            // 1. HEADER
-                            item {
-                                DetailHeader(album = album, navController = navController)
+                                    // 3. LISTA DE CANCIONES
+                                    item {
+                                        // PASAMOS EL NAV CONTROLLER
+                                        AlbumSongsList(album = album, navController = navController)
+                                    }
+                                }
                             }
-
-                            // 2. CARD ABOUT
-                            item {
-                                AboutAlbumCard(album = album)
-                            }
-
-                            // 3. LISTA DE CANCIONES
-                            item {
-                                AlbumSongsList(album = album)
-                            }
+                        } else {
+                            Text("Error: El ID del album no es valido")
                         }
-                    }
-                }
+                }}
                 is Resource.Error -> {
                     Text(
                         text = "ERROR: ${albumResource.message} (ID: $albumId)",

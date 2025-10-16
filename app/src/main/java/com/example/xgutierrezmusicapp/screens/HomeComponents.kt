@@ -95,7 +95,7 @@ fun AlbumCard(album: Album,
     Card(
         onClick = {
             onAlbumSelected(album)
-            navController.navigate(Routes.Detail.createRoute(album.id))
+            navController.navigate(Routes.Detail.createRoute(album.id ?: "0"))
         },
         modifier = Modifier
             .padding(end = 12.dp)
@@ -114,7 +114,6 @@ fun AlbumCard(album: Album,
                 contentScale = ContentScale.Crop
             )
 
-            // Scrim/Overlay Oscuro
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,14 +134,14 @@ fun AlbumCard(album: Album,
                     .padding(10.dp)
             ) {
                 Text(
-                    text = album.title,
+                    text = album.title ?: "Título Desconocido",
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     maxLines = 1
                 )
                 Text(
-                    text = album.artist,
+                    text = album.artist ?: "Artista Desconocido",
                     color = Color.LightGray,
                     fontSize = 12.sp,
                     maxLines = 1
@@ -219,6 +218,8 @@ fun RecentlyPlayedCard(album: Album,
     Card(
         onClick = {
             onAlbumSelected(album)
+            navController.navigate(Routes.Detail.createRoute(album.id ?: "0"))
+
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -251,7 +252,7 @@ fun RecentlyPlayedCard(album: Album,
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = album.title,
+                    text = album.title ?: "Título Desconocido",
                     color = Color.Black,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,

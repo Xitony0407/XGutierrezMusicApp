@@ -62,6 +62,8 @@ class DetailViewModel(
     }
 
     fun toggleMiniPlayer() {
-        state = state.copy(isPlaying = !state.isPlaying)
+        if (state.albumDetail is Resource.Success) {
+            state = state.copy(isPlaying = !state.isPlaying)
+        }
     }
 }

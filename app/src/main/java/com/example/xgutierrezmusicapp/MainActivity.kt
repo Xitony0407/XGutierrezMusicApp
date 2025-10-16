@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.xgutierrezmusicapp.screens.DetailScreen
 import com.example.xgutierrezmusicapp.screens.HomeScreen
 import com.example.xgutierrezmusicapp.screens.Routes
+import com.example.xgutierrezmusicapp.screens.SongDetailScreen
 import com.example.xgutierrezmusicapp.ui.theme.XGutierrezMusicAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +46,23 @@ class MainActivity : ComponentActivity() {
                         } else {
                             DetailScreen(navController = navController, albumId = albumId)
                         }
+                    }
+
+                    composable(
+                        route = Routes.SongDetail.route,
+                        arguments = listOf(
+                            navArgument("albumId") { type = NavType.StringType },
+                            navArgument("songTitle") { type = NavType.StringType }
+                        )
+                    ) { backStackEntry ->
+                        val albumId = backStackEntry.arguments?.getString("albumId") ?: "Error"
+                        val songTitle = backStackEntry.arguments?.getString("songTitle") ?: "Canción Desconocida"
+
+                        SongDetailScreen(
+                            navController = navController,
+                            albumId = albumId,
+                            songTitle = songTitle
+                        )
                     }
             }
         }

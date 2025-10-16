@@ -24,7 +24,8 @@ class HomeViewModel(
 ) {
     var state by mutableStateOf(HomeUiState())
 
-    private val coroutineScope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO)
+    private val coroutineScope =
+        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO)
 
 
     init {
@@ -73,6 +74,8 @@ class HomeViewModel(
 
     // Función para manejar el estado de play/pause del mini reproductor
     fun toggleMiniPlayer() {
-        state = state.copy(isPlaying = !state.isPlaying)
+        state.currentMiniPlayerAlbum?.let {
+            state = state.copy(isPlaying = !state.isPlaying)
+        }
     }
 }

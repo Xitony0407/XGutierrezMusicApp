@@ -38,8 +38,8 @@ fun HomeScreen(
         bottomBar = {
             uiState.currentMiniPlayerAlbum?.let { album ->
                 MiniPlayer(
-                    title = album.title,
-                    artist = album.artist,
+                    title = album.title ?: "Desconocido",
+                    artist = album.artist ?: "Desconocido",
                     isPlaying = uiState.isPlaying,
                     onPlayPauseClicked = homeViewModel::toggleMiniPlayer
                 )

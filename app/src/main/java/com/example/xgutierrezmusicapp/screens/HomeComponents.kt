@@ -95,7 +95,7 @@ fun AlbumCard(album: Album,
     Card(
         onClick = {
             onAlbumSelected(album)
-            navController.navigate(Routes.Detail.createRoute(album.id ?: "0"))
+            navController.navigate(Routes.Detail.createRoute(album.id))
         },
         modifier = Modifier
             .padding(end = 12.dp)
@@ -108,7 +108,7 @@ fun AlbumCard(album: Album,
         ) {
             // Imagen de Fondo (Coil)
             AsyncImage(
-                model = album.cover,
+                model = album.image,
                 contentDescription = "Cover de ${album.title}",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -218,7 +218,7 @@ fun RecentlyPlayedCard(album: Album,
     Card(
         onClick = {
             onAlbumSelected(album)
-            navController.navigate(Routes.Detail.createRoute(album.id ?: "0"))
+            navController.navigate(Routes.Detail.createRoute(album.id))
 
         },
         modifier = Modifier
@@ -237,7 +237,7 @@ fun RecentlyPlayedCard(album: Album,
         ) {
             // Imagen Miniatura (Coil)
             AsyncImage(
-                model = album.cover,
+                model = album.image,
                 contentDescription = "Cover de ${album.title}",
                 modifier = Modifier
                     .size(50.dp)

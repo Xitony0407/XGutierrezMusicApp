@@ -20,17 +20,14 @@ import com.example.xgutierrezmusicapp.models.Album
 import com.example.xgutierrezmusicapp.models.Resource
 import com.example.xgutierrezmusicapp.ui.theme.BackgroundLight
 import com.example.xgutierrezmusicapp.ui.theme.XGutierrezMusicAppTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
-@Composable
-private fun rememberHomeViewModel(
-    viewModel: HomeViewModel = remember { HomeViewModel() }
-): HomeViewModel = viewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    homeViewModel: HomeViewModel = rememberHomeViewModel()
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     val uiState = homeViewModel.state
     val scrollState = rememberScrollState()
@@ -96,7 +93,7 @@ private val dummyAlbum = Album(
     id = "1",
     title = "Tales of Ithiria",
     artist = "Haggard",
-    cover = "https://example.com/dummy.jpg", // URL de imagen
+    image = "https://example.com/dummy.jpg", // URL de imagen
     description = "Descripción ficticia para el preview."
 )
 private val dummyViewModel = HomeViewModel(shouldFetchData = false).apply {

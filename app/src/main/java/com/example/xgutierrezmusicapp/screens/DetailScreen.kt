@@ -63,32 +63,30 @@ fun DetailScreen(navController: NavController, albumId: String) {
                         Text(text = "Cargando detalle...", modifier = Modifier.padding(top = 70.dp))
                     }
                 }
+
                 is Resource.Success -> {
                     albumResource.data?.let { album ->
-                        if (!album.id.isNullOrEmpty()) {
-                            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                if (album.id.isNotEmpty()) {
-                                    // 1. HEADER
-                                    item {
-                                        DetailHeader(album = album, navController = navController)
-                                    }
-
-                                    // 2. CARD ABOUT
-                                    item {
-                                        AboutAlbumCard(album = album)
-                                    }
-
-                                    // 3. LISTA DE CANCIONES
-                                    item {
-                                        // PASAMOS EL NAV CONTROLLER
-                                        AlbumSongsList(album = album, navController = navController)
-                                    }
-                                }
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                            // 1. HEADER
+                            item {
+                                DetailHeader(album = album, navController = navController)
                             }
-                        } else {
-                            Text("Error: El ID del album no es valido")
+
+                            // 2. CARD ABOUT
+                            item {
+                                AboutAlbumCard(album = album)
+                            }
+
+                            // 3. LISTA DE CANCIONES
+                            item {
+                                // PASAMOS EL NAV CONTROLLER
+                                AlbumSongsList(album = album, navController = navController)
+                            }
                         }
-                }}
+
+                    }
+                }
+
                 is Resource.Error -> {
                     Text(
                         text = "ERROR: ${albumResource.message} (ID: $albumId)",

@@ -37,15 +37,8 @@ class MainActivity : ComponentActivity() {
                             navArgument("albumId") { type = NavType.StringType }
                         )
                     ) { backStackEntry ->
-                        val albumId = backStackEntry.arguments?.getString("albumId")
-
-                        if (albumId.isNullOrEmpty()) {
-                            navController.navigate(Routes.Home.route) {
-                                popUpTo(Routes.Home.route) { inclusive = true } // Limpia la pila para evitar bucles
-                            }
-                        } else {
-                            DetailScreen(navController = navController, albumId = albumId)
-                        }
+                        val albumId = backStackEntry.arguments?.getString("albumId") ?: "Error"
+                        DetailScreen(navController = navController, albumId = albumId)
                     }
 
                     composable(

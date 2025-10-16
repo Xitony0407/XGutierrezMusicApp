@@ -27,8 +27,8 @@ import com.example.xgutierrezmusicapp.ui.theme.HeaderPurpleEnd
 import com.example.xgutierrezmusicapp.ui.theme.MiniPlayerDark
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
-import com.example.xgutierrezmusicapp.ui.theme.CardWhite // Importa el CardWhite
-import androidx.compose.material.icons.filled.MoreVert // Necesario para el ícono
+import com.example.xgutierrezmusicapp.ui.theme.CardWhite
+import androidx.compose.material.icons.filled.MoreVert
 
 
 @Composable
@@ -46,7 +46,7 @@ fun DetailHeader(album: Album, navController: NavController) {
             .height(400.dp)
     ) {
         AsyncImage(
-            model = album.cover,
+            model = album.image,
             contentDescription = "Cover de ${album.title}",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
@@ -237,16 +237,19 @@ fun AlbumSongsList(album: Album,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
 
-    repeat(10) { index ->
-        val trackNumber = index + 1
-        val fullSongTitle = "${album.title} • Track $trackNumber"
+    val songsToDisplay = if (album.songs.isNullOrEmpty()) {
+        List(10) { index -> "${album.title} • Track ${index + 1}" }
+    } else {
+        album.songs
+    }
 
+    songsToDisplay.forEach { songTitle ->
         SongItemCard(
-            songTitle = fullSongTitle,
+            songTitle = songTitle,
             artistName = album.artist ?: "Artista Desconocido",
-            coverUrl = album.cover,
-            albumId = album.id ?: "0", // <--- PASAMOS EL ID DEL ÁLBUM
-            navController = navController // <--- PASAMOS EL NAV CONTROLLER
+            coverUrl = album.image,
+            albumId = album.id ?: "0",
+            navController = navController
         )
     }
 

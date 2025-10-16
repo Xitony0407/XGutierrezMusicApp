@@ -21,12 +21,8 @@ data class HomeUiState(
 class HomeViewModel(
     private val api: ApiService = ApiService,
     shouldFetchData: Boolean = true
-) {
+) : ViewModel() {
     var state by mutableStateOf(HomeUiState())
-
-    private val coroutineScope =
-        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO)
-
 
     init {
         if (shouldFetchData) {
@@ -43,7 +39,7 @@ class HomeViewModel(
 
     // Llama a la API para obtener la lista de álbumes
     fun fetchAlbums() {
-        coroutineScope.launch {
+        viewModelScope.launch {
             try {
                 // 1. Iniciar carga
                 state = state.copy(albums = Resource.Loading())

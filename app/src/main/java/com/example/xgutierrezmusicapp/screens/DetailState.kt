@@ -3,11 +3,11 @@ package com.example.xgutierrezmusicapp.screens
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.xgutierrezmusicapp.models.Album
 import com.example.xgutierrezmusicapp.models.Resource
 import com.example.xgutierrezmusicapp.services.ApiService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -19,11 +19,9 @@ data class DetailUiState(
 class DetailViewModel(
     private val api: ApiService = ApiService,
     private val albumId: String
-) {
+) : ViewModel() {
     var state by mutableStateOf(DetailUiState())
         private set
-
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     init {
         // Inicia la carga del detalle inmediatamente al crearse el ViewModel
@@ -32,7 +30,7 @@ class DetailViewModel(
 
     // Llama a la API para obtener el detalle de un álbum por su ID
     private fun fetchAlbumDetail(id: String) {
-        coroutineScope.launch {
+        viewModelScope.launch { // ✅ Uso de viewModelScope
             try {
                 // 1. Iniciar carga
                 state = state.copy(albumDetail = Resource.Loading())

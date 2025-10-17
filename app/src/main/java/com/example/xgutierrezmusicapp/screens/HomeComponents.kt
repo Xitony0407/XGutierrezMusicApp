@@ -104,7 +104,8 @@ fun AlbumCard(album: Album,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
             // Imagen de Fondo (Coil)
             AsyncImage(
@@ -121,7 +122,7 @@ fun AlbumCard(album: Album,
                     .align(Alignment.BottomCenter)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.7f)),
+                            colors = listOf(Color.Transparent, HeaderPurpleStart.copy(0.9f)),
                             startY = 0f
                         )
                     )

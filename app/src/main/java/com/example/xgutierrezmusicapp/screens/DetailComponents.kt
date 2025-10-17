@@ -35,7 +35,7 @@ import androidx.compose.material.icons.filled.MoreVert
 fun DetailHeader(album: Album, navController: NavController) {
     // Gradiente morado que actuará como scrim (overlay)
     val gradientBrush = Brush.verticalGradient(
-        colors = listOf(Color.Transparent, HeaderPurpleStart.copy(alpha = 0.8f), HeaderPurpleEnd.copy(alpha = 0.9f)),
+        colors = listOf(Color.Transparent, HeaderPurpleStart.copy(alpha = 0.2f), HeaderPurpleEnd.copy(alpha = 0.2f)),
         startY = 0f,
         endY = 400f
     )
@@ -104,14 +104,14 @@ fun DetailHeader(album: Album, navController: NavController) {
                     Icon(Icons.Filled.PlayArrow, contentDescription = "Play", tint = Color.Black, modifier = Modifier.size(32.dp))
                 }
 
-                // Botón Shuffle
+
                 IconButton(
-                    onClick = { /* Handle Shuffle */ },
+                    onClick = {  },
                     modifier = Modifier
                         .size(56.dp)
                         .background(Color.White, CircleShape)
                 ) {
-                    Icon(Icons.Filled.Shuffle, contentDescription = "Shuffle", tint = Color.Black, modifier = Modifier.size(32.dp))
+                    Icon(Icons.Filled.PlayArrow, contentDescription = "Play", tint = Color.Black, modifier = Modifier.size(32.dp))
                 }
             }
         }
@@ -146,16 +146,28 @@ fun AboutAlbumCard(album: Album) {
                 color = Color.DarkGray
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
 
-            AssistChip(
-                onClick = { /* Handle Artist Click */ },
-                label = { Text("Artist: ${album.artist}") },
-                colors = AssistChipDefaults.assistChipColors(
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                    labelColor = MaterialTheme.colorScheme.primary
-                ),
-                shape = RoundedCornerShape(8.dp)
+@Composable
+fun ArtistChip(album: Album) {
+    Card(
+        modifier = Modifier
+            .padding(start = 16.dp) //
+            .wrapContentSize(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = CardWhite),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 12.dp, vertical = 6.dp)
+        ) {
+            Text(
+                text = "Artist: ${album.artist ?: "Desconocido"}",
+                color = MaterialTheme.colorScheme.primary, // Color del texto morado
+                fontWeight = FontWeight.SemiBold
             )
         }
     }
@@ -165,11 +177,14 @@ fun AboutAlbumCard(album: Album) {
 fun SongItemCard(songTitle: String,
                  artistName: String,
                  coverUrl: String?,
-                 albumId: String,
-                 navController: NavController) {
+                 //albumId: String,
+                 //navController: NavController
+){
     Card(
         onClick = {
-            navController.navigate(Routes.SongDetail.createRoute(albumId, songTitle))
+            //navController.navigate(Routes.SongDetail.createRoute(albumId, songTitle))
+            // AGREGAMOS
+            println("Reproduciendo: $songTitle")
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -229,14 +244,6 @@ fun SongItemCard(songTitle: String,
 @Composable
 fun AlbumSongsList(album: Album,
                    navController: NavController) {
-
-    Text(
-        text = "Tracks",
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-    )
-
     val songsToDisplay = if (album.songs.isNullOrEmpty()) {
         List(10) { index -> "${album.title} • Track ${index + 1}" }
     } else {
@@ -248,8 +255,8 @@ fun AlbumSongsList(album: Album,
             songTitle = songTitle,
             artistName = album.artist ?: "Artista Desconocido",
             coverUrl = album.image,
-            albumId = album.id ?: "0",
-            navController = navController
+            //albumId = album.id ?: "0",
+            //navController = navController
         )
     }
 

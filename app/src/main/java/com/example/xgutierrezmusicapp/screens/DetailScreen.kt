@@ -13,14 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.xgutierrezmusicapp.models.Resource
 import com.example.xgutierrezmusicapp.ui.theme.BackgroundLight
 import com.example.xgutierrezmusicapp.screens.MiniPlayer
 import com.example.xgutierrezmusicapp.screens.DetailHeader
 import com.example.xgutierrezmusicapp.screens.AboutAlbumCard
 import com.example.xgutierrezmusicapp.screens.AlbumSongsList
+import com.example.xgutierrezmusicapp.ui.theme.XGutierrezMusicAppTheme
 
 @Composable
 private fun rememberDetailViewModel(
@@ -77,9 +80,15 @@ fun DetailScreen(navController: NavController, albumId: String) {
                                 AboutAlbumCard(album = album)
                             }
 
+                            item {
+                                ArtistChip(album = album) // Llama a la nueva función
+                            }
+
                             // 3. LISTA DE CANCIONES
                             item {
                                 // PASAMOS EL NAV CONTROLLER
+                                //AlbumSongsList(album = album, navController = navController)
+                                // AGREGAMOS
                                 AlbumSongsList(album = album, navController = navController)
                             }
                         }
@@ -96,5 +105,17 @@ fun DetailScreen(navController: NavController, albumId: String) {
                 }
             }
         }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailScreen() {
+    XGutierrezMusicAppTheme {
+        DetailScreen(
+            navController = rememberNavController(),
+            albumId = "1" // ID de prueba
+        )
     }
 }

@@ -41,22 +41,22 @@ class MainActivity : ComponentActivity() {
                         DetailScreen(navController = navController, albumId = albumId)
                     }
 
-                    composable(
-                        route = Routes.SongDetail.route,
-                        arguments = listOf(
-                            navArgument("albumId") { type = NavType.StringType },
-                            navArgument("songTitle") { type = NavType.StringType }
-                        )
-                    ) { backStackEntry ->
-                        val albumId = backStackEntry.arguments?.getString("albumId") ?: "Error"
-                        val songTitle = backStackEntry.arguments?.getString("songTitle") ?: "Canción Desconocida"
+                    //composable(
+                      //  route = Routes.SongDetail.route,
+                        //arguments = listOf(
+                          //  navArgument("albumId") { type = NavType.StringType },
+                            //navArgument("songTitle") { type = NavType.StringType }
+                        //)
+                    //) { backStackEntry ->
+                       // val albumId = backStackEntry.arguments?.getString("albumId") ?: "Error"
+                       // val songTitle = backStackEntry.arguments?.getString("songTitle") ?: "Canción Desconocida"
 
-                        SongDetailScreen(
-                            navController = navController,
-                            albumId = albumId,
-                            songTitle = songTitle
-                        )
-                    }
+                       // SongDetailScreen(
+                           // navController = navController,
+                           // albumId = albumId,
+                         //   songTitle = songTitle
+                       // )
+                   // }
             }
         }
     }

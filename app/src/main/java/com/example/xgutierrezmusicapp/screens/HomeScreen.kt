@@ -70,7 +70,7 @@ fun HomeScreen(
 
                         // Lista de "Recently Played"
                         RecentlyPlayedList(
-                            albums = albums.take(5),
+                            albums = albums.take(10),
                             navController = navController,
                             onAlbumSelected = homeViewModel::setMiniPlayerAlbum
                         )
